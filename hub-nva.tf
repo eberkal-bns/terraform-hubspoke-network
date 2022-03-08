@@ -92,118 +92,118 @@ resource "azurerm_resource_group" "hub-nva-rg" {
 
 
 #route table for Hub-Gateway
-resource "azurerm_route_table" "hub-gateway-rt" {
-    name                          = "hub-gateway-rt"
-    location                      = azurerm_resource_group.hub-nva-rg.location
-    resource_group_name           = azurerm_resource_group.hub-nva-rg.name
-    disable_bgp_route_propagation = false
+#resource "azurerm_route_table" "hub-gateway-rt" {
+#    name                          = "hub-gateway-rt"
+#    location                      = azurerm_resource_group.hub-nva-rg.location
+#    resource_group_name           = azurerm_resource_group.hub-nva-rg.name
+#    disable_bgp_route_propagation = false
 
-    route {
-    name           = "toHub"
-    address_prefix = "10.0.0.0/16"
-    next_hop_type  = "VnetLocal"
-    }
+#    route {
+#    name           = "toHub"
+#    address_prefix = "10.0.0.0/16"
+#    next_hop_type  = "VnetLocal"
+#    }
 
-    route {
-    name                   = "toSpoke1"
-    address_prefix         = "10.1.0.0/16"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.0.36"
-    }
+#    route {
+#    name                   = "toSpoke1"
+#    address_prefix         = "10.1.0.0/16"
+#    next_hop_type          = "VirtualAppliance"
+#    next_hop_in_ip_address = "10.0.0.36"
+#    }
 
-    route {
-    name                   = "toSpoke2"
-    address_prefix         = "10.2.0.0/16"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.0.36"
-    }
+ #   route {
+ #   name                   = "toSpoke2"
+ #   address_prefix         = "10.2.0.0/16"
+ #   next_hop_type          = "VirtualAppliance"
+ #   next_hop_in_ip_address = "10.0.0.36"
+ #   }
 
-    tags = {
-    environment = local.prefix-hub-nva
-    }
-}
+#    tags = {
+ #   environment = local.prefix-hub-nva
+ #   }
+#}
 
 #route table for Spoke1
-resource "azurerm_route_table" "spoke1-rt" {
-    name                          = "spoke1-rt"
-    location                      = azurerm_resource_group.hub-nva-rg.location
-    resource_group_name           = azurerm_resource_group.hub-nva-rg.name
-    disable_bgp_route_propagation = false
+#resource "azurerm_route_table" "spoke1-rt" {
+#    name                          = "spoke1-rt"
+#    location                      = azurerm_resource_group.hub-nva-rg.location
+ #   resource_group_name           = azurerm_resource_group.hub-nva-rg.name
+ #   disable_bgp_route_propagation = false
 
-    route {
-    name                   = "toSpoke2"
-    address_prefix         = "10.2.0.0/16"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.0.36"
-    }
+#    route {
+#    name                   = "toSpoke2"
+#    address_prefix         = "10.2.0.0/16"
+#    next_hop_type          = "VirtualAppliance"
+#    next_hop_in_ip_address = "10.0.0.36"
+#    }
 
-    route {
-    name           = "default"
-    address_prefix = "0.0.0.0/0"
-    next_hop_type  = "vnetlocal"
-    }
+#    route {
+#    name           = "default"
+#    address_prefix = "0.0.0.0/0"
+#    next_hop_type  = "vnetlocal"
+#    }
 
-    tags = {
-    environment = local.prefix-hub-nva
-    }
-}
+#    tags = {
+#    environment = local.prefix-hub-nva
+#    }
+#}
 
 #route table for Spoke2
-resource "azurerm_route_table" "spoke2-rt" {
-    name                          = "spoke2-rt"
-    location                      = azurerm_resource_group.hub-nva-rg.location
-    resource_group_name           = azurerm_resource_group.hub-nva-rg.name
-    disable_bgp_route_propagation = false
+#resource "azurerm_route_table" "spoke2-rt" {
+#    name                          = "spoke2-rt"
+#    location                      = azurerm_resource_group.hub-nva-rg.location
+#    resource_group_name           = azurerm_resource_group.hub-nva-rg.name
+#    disable_bgp_route_propagation = false
 
-    route {
-    name                   = "toSpoke1"
-    address_prefix         = "10.1.0.0/16"
-    next_hop_in_ip_address = "10.0.0.36"
-    next_hop_type          = "VirtualAppliance"
-    }
+#    route {
+#    name                   = "toSpoke1"
+#    address_prefix         = "10.1.0.0/16"
+#    next_hop_in_ip_address = "10.0.0.36"
+#    next_hop_type          = "VirtualAppliance"
+#    }
 
-    route {
-    name           = "default"
-    address_prefix = "0.0.0.0/0"
-    next_hop_type  = "vnetlocal"
-    }
-
-    tags = {
-    environment = local.prefix-hub-nva
-    }
-}
+#   route {
+ #   name           = "default"
+#    address_prefix = "0.0.0.0/0"
+#    next_hop_type  = "vnetlocal"
+#    }
+#
+#    tags = {
+#    environment = local.prefix-hub-nva
+#    }
+#}
 
 #RT association Hub Gateway RT to Hub VNET - Gateway Subnet
-resource "azurerm_subnet_route_table_association" "hub-gateway-rt-hub-vnet-gateway-subnet" {
-    subnet_id      = azurerm_subnet.hub-gateway-subnet.id
-    route_table_id = azurerm_route_table.hub-gateway-rt.id
-    depends_on = [azurerm_subnet.hub-gateway-subnet]
-}
+#resource "azurerm_subnet_route_table_association" "hub-gateway-rt-hub-vnet-gateway-subnet" {
+#    subnet_id      = azurerm_subnet.hub-gateway-subnet.id
+#    route_table_id = azurerm_route_table.hub-gateway-rt.id
+#    depends_on = [azurerm_subnet.hub-gateway-subnet]
+#}
 
 #RT association Spoke1 RT to Spoke1 VNET - mgmt subnet
-resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-mgmt" {
-    subnet_id      = azurerm_subnet.spoke1-mgmt.id
-    route_table_id = azurerm_route_table.spoke1-rt.id
-    depends_on = [azurerm_subnet.spoke1-mgmt]
-}
+#resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-mgmt" {
+#    subnet_id      = azurerm_subnet.spoke1-mgmt.id
+#    route_table_id = azurerm_route_table.spoke1-rt.id
+#    depends_on = [azurerm_subnet.spoke1-mgmt]
+#}
 
 #RT association Spoke1 RT to Spoke1 VNET - workload subnet
-resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-workload" {
-    subnet_id      = azurerm_subnet.spoke1-workload.id
-    route_table_id = azurerm_route_table.spoke1-rt.id
-    depends_on = [azurerm_subnet.spoke1-workload]
-}
+#resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-workload" {
+#    subnet_id      = azurerm_subnet.spoke1-workload.id
+#    route_table_id = azurerm_route_table.spoke1-rt.id
+#    depends_on = [azurerm_subnet.spoke1-workload]
+#}
 
 #RT association Spoke2 to Spoke2 VNET - mgmt subnet
-resource "azurerm_subnet_route_table_association" "spoke2-rt-spoke2-vnet-mgmt" {
-    subnet_id      = azurerm_subnet.spoke2-mgmt.id
-    route_table_id = azurerm_route_table.spoke2-rt.id
-    depends_on = [azurerm_subnet.spoke2-mgmt]
-}
+#resource "azurerm_subnet_route_table_association" "spoke2-rt-spoke2-vnet-mgmt" {
+#    subnet_id      = azurerm_subnet.spoke2-mgmt.id
+#    route_table_id = azurerm_route_table.spoke2-rt.id
+#    depends_on = [azurerm_subnet.spoke2-mgmt]
+#}
 
 #RT association Spoke2 to Spoke2 VNET - workload subnet
-resource "azurerm_subnet_route_table_association" "spoke2-rt-spoke2-vnet-workload" {
-    subnet_id      = azurerm_subnet.spoke2-workload.id
-    route_table_id = azurerm_route_table.spoke2-rt.id
-    depends_on = [azurerm_subnet.spoke2-workload]
-}
+#resource "azurerm_subnet_route_table_association" "spoke2-rt-spoke2-vnet-workload" {
+#    subnet_id      = azurerm_subnet.spoke2-workload.id
+#    route_table_id = azurerm_route_table.spoke2-rt.id
+#    depends_on = [azurerm_subnet.spoke2-workload]
+#}
