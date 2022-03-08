@@ -42,7 +42,7 @@ resource "azurerm_subnet" "hub-dmz" {
     address_prefixes       = ["10.0.0.32/27"]
 }
 
-# Create a subnet for Azure Firewall
+# Create a subnet for Azure Firewall -
 resource "azurerm_subnet" "AzureFirewallSubnet" {
   name = "AzureFirewallSubnet" # mandatory name -do not rename-
   address_prefixes = ["10.0.10.0/24"]
