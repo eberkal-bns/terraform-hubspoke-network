@@ -3,7 +3,7 @@ terraform {
     organization = "bns-terraform-workshop-rs"
 
     workspaces {
-      name = "eugeneb-bns-onprem"
+      name = "eugeneb-bns-cloud"
     }
   }
 }
