@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "bns-terraform-workshop-rs"
+
+    workspaces {
+      name = "eugeneb-bns-onprem"
+    }
+  }
+}
+
 locals {
     onprem-location       = "canadacentral"
     onprem-resource-group = "onprem-vnet-rg"
