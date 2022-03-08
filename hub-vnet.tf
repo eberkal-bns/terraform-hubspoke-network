@@ -43,12 +43,12 @@ resource "azurerm_subnet" "hub-dmz" {
 }
 
 # Create a subnet for Azure Firewall -
-resource "azurerm_subnet" "AzureFirewallSubnet" {
-  name = "AzureFirewallSubnet" # mandatory name -do not rename-
-  address_prefixes = ["10.0.10.0/24"]
-  virtual_network_name = "AzureFirewallSubnet"
-  resource_group_name = azurerm_resource_group.hub-vnet-rg.name
-}
+#resource "azurerm_subnet" "AzureFirewallSubnet" {
+#  name = "AzureFirewallSubnet" # mandatory name -do not rename-
+#  address_prefixes = ["10.0.10.0/24"]
+#  virtual_network_name = "AzureFirewallSubnet"
+#  resource_group_name = azurerm_resource_group.hub-vnet-rg.name
+#}
 
 resource "azurerm_network_interface" "hub-nic" {
     name                 = "${local.prefix-hub}-nic"
