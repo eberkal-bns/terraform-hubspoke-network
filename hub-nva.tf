@@ -1,13 +1,3 @@
-terraform {
-  cloud {
-    organization = "bns-terraform-workshop-rs"
-
-    workspaces {
-      name = "eugeneb-bns-cloud"
-    }
-  }
-}
-
 locals {
     prefix-hub-nva         = "hub-nva"
     hub-nva-location       = "eastus"
