@@ -13,6 +13,7 @@ resource "azurerm_resource_group" "hub-nva-rg" {
     }
 }
 
+
 resource "azurerm_network_interface" "hub-nva-nic" {
     name                 = "${local.prefix-hub-nva}-nic"
     location             = azurerm_resource_group.hub-nva-rg.location
@@ -89,6 +90,8 @@ SETTINGS
     }
 }
 
+
+#route table for Hub-Gateway
 resource "azurerm_route_table" "hub-gateway-rt" {
     name                          = "hub-gateway-rt"
     location                      = azurerm_resource_group.hub-nva-rg.location
@@ -120,12 +123,7 @@ resource "azurerm_route_table" "hub-gateway-rt" {
     }
 }
 
-resource "azurerm_subnet_route_table_association" "hub-gateway-rt-hub-vnet-gateway-subnet" {
-    subnet_id      = azurerm_subnet.hub-gateway-subnet.id
-    route_table_id = azurerm_route_table.hub-gateway-rt.id
-    depends_on = [azurerm_subnet.hub-gateway-subnet]
-}
-
+#route table for Spoke1
 resource "azurerm_route_table" "spoke1-rt" {
     name                          = "spoke1-rt"
     location                      = azurerm_resource_group.hub-nva-rg.location
@@ -150,18 +148,7 @@ resource "azurerm_route_table" "spoke1-rt" {
     }
 }
 
-resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-mgmt" {
-    subnet_id      = azurerm_subnet.spoke1-mgmt.id
-    route_table_id = azurerm_route_table.spoke1-rt.id
-    depends_on = [azurerm_subnet.spoke1-mgmt]
-}
-
-resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-workload" {
-    subnet_id      = azurerm_subnet.spoke1-workload.id
-    route_table_id = azurerm_route_table.spoke1-rt.id
-    depends_on = [azurerm_subnet.spoke1-workload]
-}
-
+#route table for Spoke2
 resource "azurerm_route_table" "spoke2-rt" {
     name                          = "spoke2-rt"
     location                      = azurerm_resource_group.hub-nva-rg.location
@@ -186,12 +173,35 @@ resource "azurerm_route_table" "spoke2-rt" {
     }
 }
 
+#RT association Hub Gateway RT to Hub VNET - Gateway Subnet
+resource "azurerm_subnet_route_table_association" "hub-gateway-rt-hub-vnet-gateway-subnet" {
+    subnet_id      = azurerm_subnet.hub-gateway-subnet.id
+    route_table_id = azurerm_route_table.hub-gateway-rt.id
+    depends_on = [azurerm_subnet.hub-gateway-subnet]
+}
+
+#RT association Spoke1 RT to Spoke1 VNET - mgmt subnet
+resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-mgmt" {
+    subnet_id      = azurerm_subnet.spoke1-mgmt.id
+    route_table_id = azurerm_route_table.spoke1-rt.id
+    depends_on = [azurerm_subnet.spoke1-mgmt]
+}
+
+#RT association Spoke1 RT to Spoke1 VNET - workload subnet
+resource "azurerm_subnet_route_table_association" "spoke1-rt-spoke1-vnet-workload" {
+    subnet_id      = azurerm_subnet.spoke1-workload.id
+    route_table_id = azurerm_route_table.spoke1-rt.id
+    depends_on = [azurerm_subnet.spoke1-workload]
+}
+
+#RT association Spoke2 to Spoke2 VNET - mgmt subnet
 resource "azurerm_subnet_route_table_association" "spoke2-rt-spoke2-vnet-mgmt" {
     subnet_id      = azurerm_subnet.spoke2-mgmt.id
     route_table_id = azurerm_route_table.spoke2-rt.id
     depends_on = [azurerm_subnet.spoke2-mgmt]
 }
 
+#RT association Spoke2 to Spoke2 VNET - workload subnet
 resource "azurerm_subnet_route_table_association" "spoke2-rt-spoke2-vnet-workload" {
     subnet_id      = azurerm_subnet.spoke2-workload.id
     route_table_id = azurerm_route_table.spoke2-rt.id
