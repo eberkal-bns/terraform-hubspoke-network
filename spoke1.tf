@@ -1,13 +1,3 @@
-terraform {
-  cloud {
-    organization = "bns-terraform-workshop-rs"
-
-    workspaces {
-      name = "eugeneb-bns-cloud"
-    }
-  }
-}
-
 locals {
     spoke1-location       = "eastus"
     spoke1-resource-group = "spoke1-vnet-rg"
